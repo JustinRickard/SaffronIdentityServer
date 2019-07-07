@@ -219,7 +219,7 @@ namespace RedRiver.Saffron.EntityFramework.Tooling
             }
 
             // source: https://github.com/aspnet/EntityFrameworkCore/issues/9339
-            using (var db = (SaffronDbContext)App.CompositionRoot.Resolve(contextType))
+            using (var db = (SaffronIdentityDbContext)App.CompositionRoot.Resolve(contextType))
             {
                 var reporter = new OperationReporter(
                     new OperationReportHandler(
@@ -305,7 +305,7 @@ namespace RedRiver.Saffron.EntityFramework.Tooling
                 throw new SaffronException("Please specify output file name via command line/configuration key 'path'");
             }
 
-            using (var db = (SaffronDbContext)App.CompositionRoot.Resolve(contextType))
+            using (var db = (SaffronIdentityDbContext)App.CompositionRoot.Resolve(contextType))
             {
                 var migrator = db.GetService<IMigrator>();
                 var script = migrator.GenerateScript(from, to, idempotent);
@@ -317,7 +317,7 @@ namespace RedRiver.Saffron.EntityFramework.Tooling
         {
             var target = Configuration["target"];
 
-            using (var db = (SaffronDbContext)App.CompositionRoot.Resolve(contextType))
+            using (var db = (SaffronIdentityDbContext)App.CompositionRoot.Resolve(contextType))
             {
                 var migrator = db.GetService<IMigrator>();
 

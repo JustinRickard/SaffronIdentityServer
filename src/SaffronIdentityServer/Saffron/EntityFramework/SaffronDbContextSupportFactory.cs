@@ -9,7 +9,7 @@ namespace SaffronIdentityServer.Saffron.EntityFramework
     /// <summary>
     /// Context factory class for commandline tooling scenarios only.
     /// </summary>
-    public abstract class SaffronDbContextSupportFactory<TContext> : IDesignTimeDbContextFactory<TContext>
+    public abstract class SaffronIdentityDbContextSupportFactory<TContext> : IDesignTimeDbContextFactory<TContext>
         where TContext : SaffronIdentityDbContext
     {
         public TContext CreateDbContext(string[] args)
