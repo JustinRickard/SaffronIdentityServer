@@ -43,10 +43,11 @@ namespace SaffronIdentityServer
             app.UseName("IdentityServer", "IDSR")
                 .UseAutofac()
                 .UseSwagger()
-                .UseWebApiModule<IdentityServerModule>()
-                .UseIdentityStores()
                 .UseEntityFrameworkIdentityServer<CoreContext>((options, connStr) =>
-                    options.UseSqlServer(connStr));
+                    options.UseSqlServer(connStr))
+                .UseWebApiModule<IdentityServerModule>()
+                .UseIdentityStores<CoreContext>();
+
         }
     }
 }

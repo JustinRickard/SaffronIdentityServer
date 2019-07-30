@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SaffronIdentityServer.Database.Models;
 
 namespace SaffronIdentityServer.Controllers
 {
@@ -10,6 +12,17 @@ namespace SaffronIdentityServer.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private CoreContext _ctx;
+        private IUserStore<User> _userStore;
+        private IdentityErrorDescriber _errorDescriber;
+
+        public ValuesController(CoreContext ctx, IdentityErrorDescriber errorDescriber, IUserStore<User> userStore)
+        {
+            _errorDescriber = errorDescriber;
+            _userStore = userStore; // new UserStore<User>(ctx);
+            _ctx = ctx;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
