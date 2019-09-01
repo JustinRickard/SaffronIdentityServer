@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,17 @@ namespace SaffronIdentityServer.Saffron.EntityFramework
                 var connectionString = GetConnectionStringOrThrow<TContext>(config);
 
                 configuredBuilder.UseMicrosoftServices(services => services
+                     // TODO: Check these are needed
+                    .AddDbContext<PersistedGrantDbContext>(options =>
+                    {
+                        // use caller's config method to set up EF provider, any other custom settings
+                        providerAction(options, connectionString);
+                    }, ServiceLifetime.Transient)
+                    .AddDbContext<ConfigurationDbContext>(options =>
+                    {
+                        // use caller's config method to set up EF provider, any other custom settings
+                        providerAction(options, connectionString);
+                    }, ServiceLifetime.Transient)
                     .AddDbContext<TContext>(options =>
                     {
                         // use caller's config method to set up EF provider, any other custom settings

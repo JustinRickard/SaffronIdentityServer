@@ -16,7 +16,7 @@ namespace SaffronIdentityServer.Database.Models
         public string AdditionalDataJson { get; set; }
         public DateTime? DeletedUtc { get; set; }
 
-        public List<RolePermission> Permissions { get; set; }
+        // public List<RolePermission> Permissions { get; set; }
     }
 
     public class RoleConfiguration : EntityMappingConfiguration<Role>

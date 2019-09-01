@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -17,6 +18,7 @@ namespace SaffronIdentityServer.App
     {
         public void ConfigureBuilder(IApplicationBuilder builder)
         {
+            SetUpIdentityServerDb(builder);
             builder.UseIdentityServer();
         }
 
@@ -26,13 +28,14 @@ namespace SaffronIdentityServer.App
             var connectionString = @"Data Source=localhost;Initial Catalog=SaffronIdentityServerDemo;Integrated Security=True";
             var migrationAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
 
-            // TODO: AutoFac registration error => 
+            // Register Identity
             services.AddIdentity<User, Role>()
                 .AddUserStore<UserStore<User>>()
                 .AddRoleStore<RoleStore<Role>>()
                 .AddUserManager<UserManager<User>>()
                 .AddRoleManager<RoleManager<Role>>();
 
+            // Register IdentityServer
             services.AddIdentityServer()
                 .AddOperationalStore(opts =>
                     opts.ConfigureDbContext = builder =>
@@ -49,6 +52,16 @@ namespace SaffronIdentityServer.App
         public void ConfigureMvcOptions(MvcOptions options)
         {
            
+        }
+
+        private void SetUpIdentityServerDb(IApplicationBuilder builder)
+        {
+            using (var scope = builder.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                // TODO: Tables are not being created
+                scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>().Database.Migrate();
+            }
         }
 
         public BuilderConfigurationPriority ConfigureBuilderPriority => BuilderConfigurationPriority.AfterMvc;
