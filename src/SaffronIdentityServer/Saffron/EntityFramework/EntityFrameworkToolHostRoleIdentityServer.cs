@@ -219,7 +219,7 @@ namespace RedRiver.Saffron.EntityFramework.Tooling
             }
 
             // source: https://github.com/aspnet/EntityFrameworkCore/issues/9339
-            using (var db = (SaffronIdentityDbContext)App.CompositionRoot.Resolve(contextType))
+            using (var db = (DbContext)App.CompositionRoot.Resolve(contextType))
             {
                 var reporter = new OperationReporter(
                     new OperationReportHandler(
@@ -317,7 +317,7 @@ namespace RedRiver.Saffron.EntityFramework.Tooling
         {
             var target = Configuration["target"];
 
-            using (var db = (SaffronIdentityDbContext)App.CompositionRoot.Resolve(contextType))
+            using (var db = (DbContext)App.CompositionRoot.Resolve(contextType))
             {
                 var migrator = db.GetService<IMigrator>();
 

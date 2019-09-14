@@ -32,6 +32,8 @@ namespace SaffronIdentityServer.Saffron.EntityFramework
 
             // record the context as a known type: needed for EF tooling integration
             builder.GetEfContextData().KnownContextTypes.Add(typeof(TContext));
+            builder.GetEfContextData().KnownContextTypes.Add(typeof(SaffronIdentityServerPersistedGrantContext));
+            builder.GetEfContextData().KnownContextTypes.Add(typeof(SaffronIdentityServerConfigurationContext));
 
             builder.AfterConfiguration((configuredBuilder, config) =>
             {
@@ -40,12 +42,12 @@ namespace SaffronIdentityServer.Saffron.EntityFramework
 
                 configuredBuilder.UseMicrosoftServices(services => services
                      // TODO: Check these are needed
-                    .AddDbContext<PersistedGrantDbContext>(options =>
+                    .AddDbContext<SaffronIdentityServerPersistedGrantContext>(options =>
                     {
                         // use caller's config method to set up EF provider, any other custom settings
                         providerAction(options, connectionString);
                     }, ServiceLifetime.Transient)
-                    .AddDbContext<ConfigurationDbContext>(options =>
+                    .AddDbContext<SaffronIdentityServerConfigurationContext>(options =>
                     {
                         // use caller's config method to set up EF provider, any other custom settings
                         providerAction(options, connectionString);

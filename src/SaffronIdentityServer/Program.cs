@@ -45,6 +45,7 @@ namespace SaffronIdentityServer
                 .UseSwagger()
                 .UseEntityFrameworkIdentityServer<CoreContext>((options, connStr) =>
                     options.UseSqlServer(connStr))
+                .UseIdentityServerDbContexts()
                 .UseWebApiModule<IdentityServerModule>()
                 .UseIdentityStores<CoreContext>();
 

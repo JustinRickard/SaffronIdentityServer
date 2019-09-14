@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RedRiver.SaffronCore;
 using SaffronIdentityServer.Database.Models;
+using SaffronIdentityServer.Saffron.EntityFramework;
 
 namespace SaffronIdentityServer.App
 {
@@ -20,5 +23,18 @@ namespace SaffronIdentityServer.App
 
             return builder;
         }
+
+        public static IAppBuilder UseIdentityServerDbContexts(this IAppBuilder builder)
+        {
+            builder.CompositionRoot.RegisterScoped<OperationalStoreOptions, OperationalStoreOptions>();
+            builder.CompositionRoot.RegisterScoped<SaffronIdentityServerPersistedGrantContext, SaffronIdentityServerPersistedGrantContext>();
+
+            builder.CompositionRoot.RegisterScoped<ConfigurationStoreOptions, ConfigurationStoreOptions>();
+            builder.CompositionRoot.RegisterScoped<SaffronIdentityServerConfigurationContext, SaffronIdentityServerConfigurationContext>();
+            
+
+            return builder;
+        }
+        
     }
 }
